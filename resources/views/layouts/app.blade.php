@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Leave Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gray-200 font-mono">
     <nav class="p-2 bg-white flex justify-between font-semibold text-green-950 ">
         <ul class="flex item-center">
             <li class="p-6"><a href="{{ route('home') }}">
@@ -17,15 +18,14 @@
             @auth
                 @if (\Auth::user()->type != 'admin')
                     <li class="p-6"><a href="{{ route('apply-leave') }}">Apply Leave</a></li>
+                @else
+                    <li class="p-6"><a href="">Manage Users</a></li>
                 @endif
             @endauth
 
             <li class="p-6"><a href="{{ route('leave') }}">
                     Leave History</a></li>
 
-            <li class="p-6">#</li>
-            <li class="p-6">#</li>
-            <li class="p-6">#</li>
         </ul>
         <ul class="flex item-center">
             @auth

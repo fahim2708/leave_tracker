@@ -3,13 +3,13 @@
 @section('content')
     <div class="flex justify-center items-center">
         <div class="bg-white p-8 rounded shadow-lg w-full max-w-xl">
-            <h2 class="text-2xl text-blue-950 font-bold mb-4 text-center">Leave Request Form</h2>
+            <h1 class="text-2xl text-blue-950 font-bold mb-4 text-center">Leave Request Form</h1>
+
             <form action="{{ route('store-leave') }}" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label for="leave_type" class="block text-sm font-medium text-gray-700 mb-2">Select Leave Type</label>
-                    <select id="leave_type" name="leave_type"
-                        class="w-full px-4 py-2 border rounded-md">
+                    <select id="leave_type" name="leave_type" class="w-full px-4 py-2 border rounded-md">
                         <option value="Casual Leave">Casual Leave</option>
                         <option value="Sick Leave">Sick Leave</option>
                         <option value="Emergency Leave">Emergency Leave</option>

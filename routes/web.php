@@ -29,4 +29,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/leave', [LeaveController::class, 'index'])->name('leave');
     Route::get('/apply-leave', [LeaveController::class, 'create'])->name('apply-leave');
     Route::post('/store-leave', [LeaveController::class, 'store'])->name('store-leave');
+    Route::get('leave/{id}/action',  [LeaveController::class, 'action']);
+    Route::post('leave/changeaction',  [LeaveController::class, 'changeaction'])->name('leave.changeaction');
 });

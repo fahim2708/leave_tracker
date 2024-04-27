@@ -13,7 +13,17 @@ class LeaveController extends Controller
 {
     public function index()
     {
-        return view('leave.index');
+
+        if (auth()->user()->type != 'admin') {
+            $employees = Employee::where('user_id', '=', auth()->user()->id)->pluck('id');
+            $datas   = LeaveRequest::where('employee_id', '=', $employees)->get();
+        }
+        else{
+            $employees = Employee::all();
+            $datas = LeaveRequest::with('employees')->get();
+        }
+        
+        return view('leave.index', compact('datas', 'employees'));
     }
 
     public function create()
@@ -35,12 +45,14 @@ class LeaveController extends Controller
 
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
 
+            //Calculate total leave days
             $startDate = new \DateTime($request->start_date);
             $endDate = new \DateTime($request->end_date);
+
             $interval = $startDate->diff($endDate);
             $total_leave_days = $interval->days;
 
-
+            //Store a new leave
             $data = new LeaveRequest();
 
             $data->employee_id = $employee->id;
@@ -60,5 +72,31 @@ class LeaveController extends Controller
             DB::rollback();
             return redirect()->back()->with('error');
         }
+    }
+
+    public function show()
+    {
+        
+
+    }
+
+    public function action($id)
+    {
+        $leave     = LeaveRequest::find($id);
+        $employee  = Employee::find($leave->employee_id);
+
+        return view('leave.action', compact('employee', 'leave'));
+    }
+
+    public function changeaction(Request $request)
+    {
+        $leave = LeaveRequest::find($request->leave_id); 
+        $leave->remark  = $request->remarks;
+        $leave->status  = $request->status;
+
+        $leave->save();
+
+        return redirect('leave');
+
     }
 }
