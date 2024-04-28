@@ -21,19 +21,21 @@ class RegisterController extends Controller
 
     public function create(Request $request)
     {
-        
+
         $validated = $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
         ]);
-    //    dd( $request->only('name', 'email'));
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        
+        //    dd( $request->only('name', 'email'));
+
+        $user = new User();
+        $user->name =  $request->name;
+        $user->email =  $request->email;
+        $user->password = Hash::make($request->password);
+        $user->type =  $request->type ?? 'employee';
+        $user->save();
+
         $employee = Employee::create([
             'user_id' => $user->id,
             'name' => $request->name,

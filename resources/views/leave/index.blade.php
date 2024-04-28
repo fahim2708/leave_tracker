@@ -8,7 +8,7 @@
             <h1 class="text-center font-bold mb-4 text-2xl text-blue-950">My Leave History</h1>
         @endif
         <div class="container mx-auto p-4">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto overflow-y-auto h-svh">
                 <table class="table-auto w-full border border-gray-300 text-center">
                     <thead class="bg-gray-700 text-white text-base">
                         <tr>
@@ -17,7 +17,7 @@
                                 <th class="px-4 py-2 border border-gray-300">Employee</br>Name</th>
                             @endif
                             <th class="px-4 py-2 border border-gray-300">Leave</br>Type</th>
-                            <th class="px-4 py-2 border border-gray-300 w-auto">Applied On</th>
+                            <th class="px-4 py-2 border border-gray-300">Applied On</th>
                             <th class="px-4 py-2 border border-gray-300">Start Date</th>
                             <th class="px-4 py-2 border border-gray-300">End Date</th>
                             <th class="px-4 py-2 border border-gray-300">Total</br>Leave</br>Days</th>
@@ -50,11 +50,11 @@
                                 <td class="border px-4 py-2 border-gray-300">{{ $leave_reason }}</td>
                                 <td class="border px-4 py-2 border-gray-300">
                                     @if ($data->status == 2)
-                                        <span style="color: blue">Pending</span>
+                                        <span class="text-blue-600">Pending</span>
                                     @elseif($data->status == 1)
-                                        <span style="color: green">Accepted</span>
+                                        <span class="text-green-600">Accepted</span>
                                     @else
-                                        <span style="color: red">Rejected</span>
+                                        <span class="text-red-500">Rejected</span>
                                     @endif
                                 </td>
                                 <td class="border px-4 py-2 border-gray-300">{{ $data->remark }}</td>
@@ -72,7 +72,7 @@
                                         <a href="{{ URL::to('leave/' . $data->id . '/action') }}" 
                                             class="mx-3 inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold px-3  rounded-md"
                                             title="Leave Action">
-                                             <i class="text-white text-4xl fas fa-caret-right"></i>
+                                            <i class="text-white text-4xl fa-solid fa-caret-right"></i>
                                          </a>
                                         @else
                                         @endif
