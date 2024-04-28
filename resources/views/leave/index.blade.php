@@ -61,7 +61,7 @@
                                 <td class="border px-4 py-2 border-gray-300">
                                     @if (auth()->user()->type != 'admin')
                                         @if ($data->status == 2)
-                                            <a href="#"
+                                            <a  href="{{ URL::to('edit-leave/' . $data->id) }}""
                                                 class="inline-flex items-center px-2 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 m-2">
                                                 <i class="fas fa-edit mr-2"></i>Edit
                                             </a>

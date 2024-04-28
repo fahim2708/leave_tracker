@@ -20,10 +20,10 @@ class LeaveController extends Controller
 
         if (auth()->user()->type != 'admin') {
             $employees = Employee::where('user_id', '=', auth()->user()->id)->pluck('id');
-            $datas   = LeaveRequest::where('employee_id', '=', $employees)->get();
+            $datas   = LeaveRequest::where('employee_id', '=', $employees)->orderBy('id', 'desc')->get();
         } else {
             $employees = Employee::all();
-            $datas = LeaveRequest::with('employees')->get();
+            $datas = LeaveRequest::with('employees')->orderBy('id', 'desc')->get();
         }
 
         return view('leave.index', compact('datas', 'employees'));
@@ -32,6 +32,48 @@ class LeaveController extends Controller
     public function create()
     {
         return view('leave.create');
+    }
+
+    public function edit($id)
+    {
+        $leave = LeaveRequest::find($id);
+        return view('leave.edit', compact('leave'));
+    }
+    public function update(Request $request, $id)
+    {
+        $validator = $request->validate([
+            'leave_type' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'leave_reason' => 'required',
+        ]);
+        DB::beginTransaction();
+        try {
+            //Calculate total leave days
+            $startDate = new \DateTime($request->start_date);
+            $endDate = new \DateTime($request->end_date);
+
+            $interval = $startDate->diff($endDate);
+            $total_leave_days = $interval->days + 1;
+
+            //Update Leave Request
+            $leave = LeaveRequest::find($id);
+
+            $leave->leave_type = $request->leave_type;
+            $leave->start_date = $request->start_date;
+            $leave->end_date = $request->end_date;
+            $leave->leave_reason = $request->leave_reason;
+            $leave->total_leave_days = $total_leave_days;
+
+            $leave->save();
+
+            DB::commit();
+
+            return redirect('/leave')->with('success', 'Leave Request Updated Successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error');
+        }
     }
 
     public function store(Request $request)
@@ -81,10 +123,6 @@ class LeaveController extends Controller
         }
     }
 
-    public function show()
-    {
-    }
-
     public function action($id)
     {
         $leave     = LeaveRequest::find($id);
@@ -102,7 +140,6 @@ class LeaveController extends Controller
         $leave->save();
 
         $employee  = Employee::find($leave->employee_id);
-        // dd($employee);
 
 
         // Send email notification

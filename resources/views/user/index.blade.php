@@ -30,16 +30,21 @@
                                     @endif
                                 </td>
                                 <td class="border px-4 py-2 border-gray-300">
-                                    {{-- <button onclick="changeStatus({{ $user->id }}, {{ $user->active_status }});"
-                                        id="changeStatusBtn"
-                                        class="px-2 py-1 bg-blue-500 hover:bg-blue-800 rounded text-white"
-                                        title="Change Active Status"><i class="fa-solid fa-right-left"></i></button> --}}
-                                    <button onclick="openConfirmModal({{ $user->id }})" id="changeStatusBtn"
-                                        class="px-2 py-1 bg-blue-500 hover:bg-blue-800 rounded text-white"
-                                        title="Change Active Status">
-                                        <i class="fa-solid fa-right-left"></i>
-                                    </button>
 
+                                    <div class="mt-4 flex justify-center">
+                                        <form action="{{ route('user.update') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
+                                            @if ($user->active_status == 1)
+                                                <button title="Deactivate Now"
+                                                    class="px-4 py-2 bg-rose-500 hover:bg-rose-800 text-white rounded mr-4 ">Deactivate</button>
+                                            @else
+                                                <button title="Activate Now"
+                                                    class="px-4 py-2 bg-emerald-500 hover:bg-emerald-800 text-white rounded mr-4 ">Active</button>
+                                            @endif
+                                        </form>
+
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -48,66 +53,4 @@
             </div>
         </div>
     </div>
-
-    {{-- Modal --}}
-    <!-- Confirm Modal -->
-    <div id="confirmModal" class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 hidden">
-        <div class="flex justify-center items-center h-full">
-            <div class="bg-white rounded p-6">
-                <p>Are you sure you want to change the user's active status?</p>
-                <div class="mt-4 flex justify-center">
-                    <button onclick="changeStatus({{ $user->id }})"
-                        class="px-4 py-2 bg-blue-500 hover:bg-blue-800 text-white rounded mr-4">Yes</button>
-                    <button onclick="closeConfirmModal()"
-                        class="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-        // Function to open confirm modal
-        function openConfirmModal(userId) {
-            document.getElementById('confirmModal').classList.remove('hidden');
-            // You can store the userId somewhere accessible for use in the changeStatus function
-            // For simplicity, we'll just set a data attribute on the modal
-            document.getElementById('confirmModal').setAttribute('data-user-id', userId);
-        }
-
-        // Function to close confirm modal
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').classList.add('hidden');
-        }
-
-        // Function to change status
-        function changeStatus(userId) {
-            var userId = document.getElementById('confirmModal').getAttribute('data-user-id');
-            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            // console.log(userId);
-
-            //  AJAX POST request
-            $.ajax({
-                url: "{{ route('update.status') }}", // Laravel route
-                type: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken // Include CSRF token in headers
-                },
-                data: {
-                    userId: userId // Data to be sent
-                },
-                success: function(response) {
-                    // Handle success response
-                    console.log(response);
-                },
-                error: function(xhr, status, error) {
-                    // Handle error
-                    console.error(error);
-                }
-            });
-
-            closeConfirmModal();
-
-        }
-    </script>
 @endsection

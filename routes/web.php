@@ -34,10 +34,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store-leave', [LeaveController::class, 'store'])->name('store-leave');
     Route::get('leave/{id}/action',  [LeaveController::class, 'action']);
     Route::post('leave/changeaction',  [LeaveController::class, 'changeaction'])->name('leave.changeaction');
-
+    Route::get('edit-leave/{id}',  [LeaveController::class, 'edit'])->name('edit-leave');
+    Route::put('/leave/{id}',  [LeaveController::class, 'update']);
     //Manage User
     Route::get('/users', [UserController::class, 'index'])->name('user');
-    Route::post('/update-status', [UserController::class, 'updateStatus'])->name('update.status');
+    Route::post('/update-user', [UserController::class, 'updateStatus'])->name('user.update');
+    // Route::post('/update-status', [UserController::class, 'updateStatus'])->name('update.status');
 
 
 });
