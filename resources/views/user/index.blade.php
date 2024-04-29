@@ -5,7 +5,7 @@
 
         <h1 class="text-center font-bold mb-4 text-2xl text-blue-950">User Management</h1>
         <div class="container mx-auto p-4">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto overflow-y-auto h-svh">
                 <table class="table-auto w-full border border-gray-300 text-center">
                     <thead class="bg-gray-700 text-white text-base">
                         <tr>
