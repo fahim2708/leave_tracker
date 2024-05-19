@@ -6,7 +6,7 @@ php artisan serve <br />
 npm run dev
 
 
-#### Database generate:
+#### Generate database:
 php artisan migrate <br />
 php artisan db:seed
 

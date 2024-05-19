@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,15 +20,8 @@ class RegisterController extends Controller
     }
 
 
-    public function create(Request $request)
+    public function create(RegisterRequest $request)
     {
-
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
-        ]);
-        //    dd( $request->only('name', 'email'));
 
         $user = new User();
         $user->name =  $request->name;

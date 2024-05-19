@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LeaveRequest as RequestsLeaveRequest;
 use App\Mail\LeaveRequestApprovalNotification;
 use App\Mail\LeaveRequestNotification;
 use App\Mail\LeaveRequestRejectionNotification;
@@ -39,16 +40,12 @@ class LeaveController extends Controller
         $leave = LeaveRequest::find($id);
         return view('leave.edit', compact('leave'));
     }
-    public function update(Request $request, $id)
+    public function update(RequestsLeaveRequest $request, $id)
     {
-        $validator = $request->validate([
-            'leave_type' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'leave_reason' => 'required',
-        ]);
-        DB::beginTransaction();
+        
+        
         try {
+            DB::beginTransaction();
             //Calculate total leave days
             $startDate = new \DateTime($request->start_date);
             $endDate = new \DateTime($request->end_date);
@@ -76,18 +73,14 @@ class LeaveController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(RequestsLeaveRequest $request)
     {
 
-        $validator = $request->validate([
-            'leave_type' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'leave_reason' => 'required',
-        ]);
-        DB::beginTransaction();
+    
+        
         try {
-
+            DB::beginTransaction();
+            
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
 
             //Calculate total leave days

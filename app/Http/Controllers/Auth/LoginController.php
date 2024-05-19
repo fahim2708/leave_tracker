@@ -16,18 +16,12 @@ class LoginController extends Controller
     public function create(Request $request)
     {
         // dd($request->remember);
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
-        
-            if(!auth()->attempt($request->only('email', 'password'), $request->remember)){
-               return  back()->with('status', 'Invalid Credentials');
-            }
-            // return redirect()->route('home'); //redirect to fixed page which is mentioned
-            return redirect()->intended('/'); //redirect to previous page from where login page opened
-        
+        if (!auth()->attempt($request->only('email', 'password'), $request->remember)) {
+            return  back()->with('status', 'Invalid Credentials');
+        }
+        // return redirect()->route('home'); //redirect to fixed page which is mentioned
+        return redirect()->intended('/'); //redirect to previous page from where login page opened
+
     }
-
 }
