@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Requests\LeaveRequest as RequestsLeaveRequest;
 use App\Mail\LeaveRequestApprovalNotification;
 use App\Mail\LeaveRequestNotification;
@@ -10,7 +11,6 @@ use App\Models\Employee;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -21,10 +21,10 @@ class LeaveController extends Controller
 
         if (auth()->user()->type != 'admin') {
             $employees = Employee::where('user_id', '=', auth()->user()->id)->pluck('id');
-            $datas   = LeaveRequest::where('employee_id', '=', $employees)->orderBy('id', 'desc')->get();
+            $datas   = LeaveRequest::where('employee_id', '=', $employees)->orderBy('id', 'desc')->paginate(5);
         } else {
             $employees = Employee::all();
-            $datas = LeaveRequest::with('employees')->orderBy('id', 'desc')->get();
+            $datas = LeaveRequest::with('employees')->orderBy('id', 'desc')->paginate(5);
         }
 
         return view('leave.index', compact('datas', 'employees'));
@@ -43,9 +43,9 @@ class LeaveController extends Controller
     public function update(RequestsLeaveRequest $request, $id)
     {
         
-        
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
+            
             //Calculate total leave days
             $startDate = new \DateTime($request->start_date);
             $endDate = new \DateTime($request->end_date);
@@ -77,9 +77,8 @@ class LeaveController extends Controller
     {
 
     
-        
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
 

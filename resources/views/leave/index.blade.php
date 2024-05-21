@@ -40,9 +40,12 @@
                                     </td>
                                 @endif
                                 <td class="border px-4 py-2 border-gray-300">{{ $data->leave_type }}</td>
-                                <td class="border px-4 py-2 border-gray-300 min-w-28">{{ $data->applied_on->format('d-m-Y') }}</td>
-                                <td class="border px-4 py-2 border-gray-300 min-w-28">{{ $data->start_date->format('d-m-Y') }}</td>
-                                <td class="border px-4 py-2 border-gray-300 min-w-28">{{ $data->end_date->format('d-m-Y') }}</td>
+                                <td class="border px-4 py-2 border-gray-300 min-w-28">
+                                    {{ $data->applied_on->format('d-m-Y') }}</td>
+                                <td class="border px-4 py-2 border-gray-300 min-w-28">
+                                    {{ $data->start_date->format('d-m-Y') }}</td>
+                                <td class="border px-4 py-2 border-gray-300 min-w-28">{{ $data->end_date->format('d-m-Y') }}
+                                </td>
                                 <td class="border px-4 py-2 border-gray-300">{{ $data->total_leave_days }}</td>
                                 @php
                                     $leave_reason = substr($data->leave_reason, 0, 15);
@@ -61,7 +64,7 @@
                                 <td class="border px-4 py-2 border-gray-300">
                                     @if (auth()->user()->type != 'admin')
                                         @if ($data->status == 2)
-                                            <a  href="{{ URL::to('edit-leave/' . $data->id) }}""
+                                            <a href="{{ URL::to('edit-leave/' . $data->id) }}""
                                                 class="inline-flex items-center px-2 py-2 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 m-2">
                                                 <i class="fas fa-edit mr-2"></i>Edit
                                             </a>
@@ -69,11 +72,11 @@
                                         @endif
                                     @else
                                         @if ($data->status == 2)
-                                        <a href="{{ URL::to('leave/' . $data->id . '/action') }}" 
-                                            class="mx-3 inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold px-3  rounded-md"
-                                            title="Leave Action">
-                                            <i class="text-white text-4xl fa-solid fa-caret-right"></i>
-                                         </a>
+                                            <a href="{{ URL::to('leave/' . $data->id . '/action') }}"
+                                                class="mx-3 inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold px-3  rounded-md"
+                                                title="Leave Action">
+                                                <i class="text-white text-4xl fa-solid fa-caret-right"></i>
+                                            </a>
                                         @else
                                         @endif
                                     @endif
@@ -82,6 +85,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                    {{ $datas->links() }}
             </div>
         </div>
     </div>
