@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Manage User
     Route::get('/users', [UserController::class, 'index'])->name('user');
     Route::post('/update-user', [UserController::class, 'updateStatus'])->name('user.update');
+    Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('user.delete');
     // Route::post('/update-status', [UserController::class, 'updateStatus'])->name('update.status');
 
 

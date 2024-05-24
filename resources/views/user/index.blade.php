@@ -50,6 +50,13 @@
                                                         class="px-4 py-2 bg-emerald-500 hover:bg-emerald-800 text-white rounded mr-4 ">Active</button>
                                                 @endif
                                             </form>
+                                            <form action="{{ route('user.delete') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="user_id" id="user_id"
+                                                    value="{{ $user->id }}">
+                                                    <button title="Delete User"
+                                                        class="px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded mr-4 ">Delete</button>
+                                            </form>
 
                                         </div>
                                     </td>

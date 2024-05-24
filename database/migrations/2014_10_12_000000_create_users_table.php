@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('is_admin')->default(2);
             $table->integer('active_status')->default(2);
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamps();    
+            $table->softDeletes();
         });
     }
 

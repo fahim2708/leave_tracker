@@ -11,7 +11,8 @@ class UserController extends Controller
     public function index()
     {
         if(request('search')){
-            $users = User::where('name', 'like', '%' . request('search') . '%')->paginate(5);
+            // $users = User::where('name', 'like', '%' . request('search') . '%')->paginate(5);
+            $users = User::whereAny(['name', 'email'], 'LIKE', '%' . request('search') . '%')->paginate(5);
         }
         else{
             $users = User::where('type', '!=', 'admin')->paginate(5);
@@ -31,5 +32,13 @@ class UserController extends Controller
 
         $user->save();
         return redirect('/users');
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->delete();
+        
+        return redirect('/users');
+
     }
 }
